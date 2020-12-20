@@ -27,10 +27,11 @@ class EmployerComponent extends Component<
     const {
       employer: { name, location },
     } = rootTree;
+
     return (
       <Box>
-        <Heading>{name}</Heading>
-        <Heading>{location}</Heading>
+        <Heading size="md">{name}</Heading>
+        <Heading size="md">{location}</Heading>
       </Box>
     );
   }

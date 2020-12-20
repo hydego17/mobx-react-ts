@@ -2,9 +2,7 @@ import * as React from 'react';
 import { Provider } from 'mobx-react';
 import { setupRootStore } from './mst/setup';
 
-import { ChakraProvider, Box, Grid, theme } from '@chakra-ui/react';
-import { ColorModeSwitcher } from './ColorModeSwitcher';
-
+import { Layout } from './components/Layout';
 import { EmployerComponent } from './components/Employer';
 
 interface Props {}
@@ -37,17 +35,9 @@ export class App extends React.Component<Props, State> {
     // Return the Store Provider
     return (
       <Provider rootTree={rootTree}>
-        <ChakraProvider theme={theme}>
-          <Box textAlign="center">
-            <Grid minH="100vh" p={3}>
-              <ColorModeSwitcher justifySelf="flex-end" />
-
-              {/* Employer Component */}
-
-              <EmployerComponent />
-            </Grid>
-          </Box>
-        </ChakraProvider>
+        <Layout>
+          <EmployerComponent />
+        </Layout>
       </Provider>
     );
   }
