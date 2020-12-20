@@ -1,38 +1,54 @@
-import * as React from "react"
-import {
-  ChakraProvider,
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
-  theme,
-} from "@chakra-ui/react"
-import { ColorModeSwitcher } from "./ColorModeSwitcher"
-import { Logo } from "./Logo"
+import * as React from 'react';
+import { Provider } from 'mobx-react';
+import { setupRootStore } from './mst/setup';
 
-export const App = () => (
-  <ChakraProvider theme={theme}>
-    <Box textAlign="center" fontSize="xl">
-      <Grid minH="100vh" p={3}>
-        <ColorModeSwitcher justifySelf="flex-end" />
-        <VStack spacing={8}>
-          <Logo h="40vmin" pointerEvents="none" />
-          <Text>
-            Edit <Code fontSize="xl">src/App.tsx</Code> and save to reload.
-          </Text>
-          <Link
-            color="teal.500"
-            href="https://chakra-ui.com"
-            fontSize="2xl"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn Chakra
-          </Link>
-        </VStack>
-      </Grid>
-    </Box>
-  </ChakraProvider>
-)
+import { ChakraProvider, Box, Grid, theme } from '@chakra-ui/react';
+import { ColorModeSwitcher } from './ColorModeSwitcher';
+
+import { EmployerComponent } from './components/Employer';
+
+interface Props {}
+
+interface State {
+  rootTree: any;
+}
+
+export class App extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      rootTree: null,
+    };
+  }
+
+  componentDidMount = () => {
+    const { rootTree } = setupRootStore();
+
+    this.setState({ rootTree });
+  };
+
+  render() {
+    // Check if Root Store/Tree exist
+    const { rootTree } = this.state;
+
+    // If none return nothin
+    if (!rootTree) return null;
+
+    // Return the Store Provider
+    return (
+      <Provider rootTree={rootTree}>
+        <ChakraProvider theme={theme}>
+          <Box textAlign="center">
+            <Grid minH="100vh" p={3}>
+              <ColorModeSwitcher justifySelf="flex-end" />
+
+              {/* Employer Component */}
+
+              <EmployerComponent />
+            </Grid>
+          </Box>
+        </ChakraProvider>
+      </Provider>
+    );
+  }
+}
