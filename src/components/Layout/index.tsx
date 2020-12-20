@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import { ChakraProvider, Box, Grid, theme } from '@chakra-ui/react';
+import { ChakraProvider, Container, theme } from '@chakra-ui/react';
 
 import { Header } from './Header';
 import { Footer } from './Footer';
@@ -13,9 +13,9 @@ export const Layout = ({ children }: LayoutProps) => {
   return (
     <ChakraProvider theme={theme}>
       <Header />
-      <Box as="main" px={2} minH="100vh">
+      <Container as="main" px={4} minH="100vh" maxW="4xl">
         {children}
-      </Box>
+      </Container>
       <Footer />
     </ChakraProvider>
   );
