@@ -103,9 +103,15 @@ class EmployerComponent extends Component<
           />
         </FormControl>
 
-        {filteredEmployees.map((employee) => (
-          <EmployeeComponent key={employee.id} employee={employee} />
-        ))}
+        {employeeNum > 0 ? (
+          filteredEmployees.map((employee) => (
+            <EmployeeComponent key={employee.id} employee={employee} />
+          ))
+        ) : (
+          <Text color="gray.500" fontWeight="semibold" fontSize="sm">
+            Please add a new employee
+          </Text>
+        )}
 
         <Divider my={6} />
 
@@ -137,7 +143,7 @@ class EmployerComponent extends Component<
             </NumberInput>
           </FormControl>
 
-          <Button type="submit" colorScheme="green" my={2}>
+          <Button type="submit" colorScheme="teal" my={2}>
             Submit
           </Button>
         </Box>
