@@ -1,13 +1,12 @@
-import React, { Component } from 'react';
-import { inject, observer } from 'mobx-react';
+import React, { Component } from "react";
+import { inject, observer } from "mobx-react";
 
 import {
   Box,
   Heading,
+  Text,
   FormControl,
   FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
@@ -16,9 +15,9 @@ import {
   Input,
   Divider,
   Button,
-} from '@chakra-ui/react';
-import { Root } from '../mst';
-import { EmployeeComponent } from './Employee';
+} from "@chakra-ui/react";
+import { Root } from "../mst";
+import { EmployeeComponent } from "./Employee";
 
 interface EmployerComponentProps {
   rootTree?: Root;
@@ -26,9 +25,10 @@ interface EmployerComponentProps {
 interface EmployerComponentState {
   employeeName: string;
   hoursWorked: string;
+  searchString: string;
 }
 
-@inject('rootTree')
+@inject("rootTree")
 @observer
 class EmployerComponent extends Component<
   EmployerComponentProps,
@@ -37,8 +37,9 @@ class EmployerComponent extends Component<
   constructor(props: EmployerComponentProps) {
     super(props);
     this.state = {
-      employeeName: '',
-      hoursWorked: '',
+      employeeName: "",
+      hoursWorked: "",
+      searchString: "",
     };
   }
 
@@ -51,6 +52,11 @@ class EmployerComponent extends Component<
     this.setState({ hoursWorked: value });
   };
 
+  searchStringChange = (e: any) => {
+    const searchString = e.target.value;
+    this.setState({ searchString });
+  };
+
   onSubmit = (e: any) => {
     e.preventDefault();
 
@@ -60,28 +66,43 @@ class EmployerComponent extends Component<
     if (!rootTree) return null;
 
     rootTree.employer.newEmployee(employeeName, Number(hoursWorked));
+
+    this.setState({ employeeName: "", hoursWorked: "" });
   };
 
   render() {
-    const { employeeName, hoursWorked } = this.state;
+    const { employeeName, hoursWorked, searchString } = this.state;
     const { rootTree } = this.props;
 
     if (!rootTree) return null;
 
     const {
-      employer: { name, location, employees },
+      employer: { name, location, employees, employeeNum, filterEmployees },
     } = rootTree;
+
+    const filteredEmployees = filterEmployees(searchString);
 
     return (
       <Box>
         <Heading size="lg">{name}</Heading>
         <Heading size="md">{location}</Heading>
-
-        <Divider my={6} />
+        <Text fontSize="sm" my={4}>
+          Total number of employees: {employeeNum}
+        </Text>
+        <Divider mb={6} />
 
         <Heading size="md">Employee</Heading>
 
-        {employees.map((employee) => (
+        <FormControl maxW="lg" py={4} id="search">
+          <Input
+            type="search"
+            value={searchString}
+            onChange={this.searchStringChange}
+            placeholder="Search employee name"
+          />
+        </FormControl>
+
+        {filteredEmployees.map((employee) => (
           <EmployeeComponent key={employee.id} employee={employee} />
         ))}
 

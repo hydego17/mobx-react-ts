@@ -1,9 +1,9 @@
 // Main State Tree
-import { v4 as uuidv4 } from 'uuid';
-import { applySnapshot, Instance, types } from 'mobx-state-tree';
+import { v4 as uuidv4 } from "uuid";
+import { applySnapshot, Instance, types } from "mobx-state-tree";
 
 // Employee Model (Node of Employer)
-const EmployeeModel = types.model('Employee', {
+const EmployeeModel = types.model("Employee", {
   id: types.identifier,
   name: types.string,
   hoursWorked: types.number,
@@ -11,7 +11,7 @@ const EmployeeModel = types.model('Employee', {
 
 // Employer Model (Node of Root)
 const EmployerModel = types
-  .model('Employer', {
+  .model("Employer", {
     id: types.identifier,
     name: types.string,
     location: types.string,
@@ -28,10 +28,21 @@ const EmployerModel = types
     }
 
     return { newEmployee };
-  });
+  })
+  .views((self) => ({
+    get employeeNum() {
+      return self.employees.length;
+    },
+
+    filterEmployees(searchString: string) {
+      return self.employees.filter((employee) =>
+        employee.name.toLowerCase().includes(searchString.toLowerCase())
+      );
+    },
+  }));
 
 // Root Model (Tree)
-const RootModel = types.model('Root', {
+const RootModel = types.model("Root", {
   employer: EmployerModel,
 });
 
