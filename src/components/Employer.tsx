@@ -72,6 +72,7 @@ class EmployerComponent extends Component<
 
   render() {
     const { employeeName, hoursWorked, searchString } = this.state;
+
     const { rootTree } = this.props;
 
     if (!rootTree) return null;

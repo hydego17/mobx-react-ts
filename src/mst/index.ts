@@ -3,11 +3,23 @@ import { v4 as uuidv4 } from "uuid";
 import { applySnapshot, Instance, types } from "mobx-state-tree";
 
 // Employee Model (Node of Employer)
-const EmployeeModel = types.model("Employee", {
-  id: types.identifier,
-  name: types.string,
-  hoursWorked: types.number,
-});
+const EmployeeModel = types
+  .model("Employee", {
+    id: types.identifier,
+    name: types.string,
+    hoursWorked: types.number,
+  })
+  .actions((self) => {
+    function editEmployee(name: string, hoursWorked: number) {
+      applySnapshot(self, {
+        ...self,
+        name,
+        hoursWorked,
+      });
+    }
+
+    return { editEmployee };
+  });
 
 // Employer Model (Node of Root)
 const EmployerModel = types
