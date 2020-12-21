@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import {
   Box,
-  Heading,
   Text,
   FormControl,
   FormLabel,
@@ -12,7 +11,6 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   Input,
-  Divider,
   Button,
   Flex,
 } from "@chakra-ui/react";

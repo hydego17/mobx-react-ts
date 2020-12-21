@@ -78,7 +78,7 @@ class EmployerComponent extends Component<
     if (!rootTree) return null;
 
     const {
-      employer: { name, location, employees, employeeNum, filterEmployees },
+      employer: { name, location, employeeNum, filterEmployees },
     } = rootTree;
 
     const filteredEmployees = filterEmployees(searchString);
